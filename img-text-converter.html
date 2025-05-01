@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+	<input type="file" name="" id="fileId"
+	onchange="imageUploaded()">
+
+	<br><br>
+	<canvas id="cnvs" style="border: 2px solid black;"></canvas>
+	<br><br>
+	<span id="indicator" style="background: red;">NOT READY</span>
+	<br>
+	<button onclick="displayString()">
+		Display String and Image
+	</button>&nbsp;&gt;
+	<button onclick="getImageResolution()">
+		Get Image Size
+	</button>&nbsp;&gt;
+	<button onclick="displayImageOnCanvas()"> 
+		Display on canvas
+	</button>&nbsp;&gt;
+	<button onclick="compress()">
+		COMPRESSS
+	</button>&nbsp;&gt;
+	<button onclick="download()">
+		Download
+	</button><a id="link"></a>
+
+
+	<br><br>
+	- Image Dimensions: <span id="img_size">null</span><hr>
+	- Base64 text length: <span id="imgtxt_length">0</span><hr>
+	- Image Preview: <div id="imgtxt_preview" style="overflow:scroll;word-wrap:break-word;height: 20vh;">null</div>
+	<img id="img_preview">
+
+	<script>
+		alert("- This program compresses image using canvas to around 1000 char in base64.\n- This allows sending it as text via SMS(SMS limit ~1000char)")
+//hi
+let base64String = "";
+let reader = new FileReader();
+let file;
+let indicator;
+function imageUploaded() {
+	file = document.querySelector('input[type=file]')['files'][0];
+	indicator = document.querySelector("#indicator");
+	reader.readAsDataURL(file);
+	//reader.readAsArrayBuffer(file);
+
+	//FileReader.onload event trigger when reading operation is complete
+	reader.onload = function () {
+		base64String = reader.result;
+		indicator.textContent = "READY";
+		indicator.style.background = "lightgreen";
+	}
+}
+function displayString() {
+	var imgtxtLength = document.querySelector("#imgtxt_length");
+	var imgPreview = document.querySelector("#img_preview");
+	var imgtxtPreview = document.querySelector("#imgtxt_preview");
+	imgPreview.src = base64String;
+	imgtxtLength.textContent = base64String.length;
+	imgtxtPreview.textContent = base64String;
+}
+
+let imgWidth;
+let imgHeight;
+function getImageResolution(){
+	var imgSize = document.querySelector("#img_size");
+	img = new Image();
+	img.src = base64String;
+	imgWidth = img.width;
+	imgHeight = img.height;
+	imgSize.textContent = "w:"+imgWidth+" h:"+imgHeight;
+}
+function displayImageOnCanvas(){
+	var canvas = document.querySelector("#cnvs");
+	var imgPreview = document.querySelector("#img_preview");
+	canvas.width = imgWidth/40;
+	canvas.height = imgHeight/40;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(imgPreview, 0,0,imgWidth/40,imgHeight/40);
+}
+let data;
+function compress(){
+	var canvas = document.querySelector("#cnvs");
+	var imgtxtLength = document.querySelector("#imgtxt_length");
+	var imgPreview = document.querySelector("#img_preview");
+	var imgtxtPreview = document.querySelector("#imgtxt_preview");
+
+	data = canvas.toDataURL('image/jpeg',0.1);
+	imgPreview.src = data;
+	imgtxtLength.textContent = data.length;
+	imgtxtPreview.textContent = data;
+
+}
+
+function download(){
+	var link = document.getElementById('link');
+	link.setAttribute('download', 'compressedImage.png');
+	link.setAttribute('href', data);
+	link.click();
+}
+</script>
+</body>
+
+</html>

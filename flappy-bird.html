@@ -1,0 +1,158 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+ 	<meta charset="utf-8">
+ 	<title>Flappy Bird!</title>
+ 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+ 	<style>
+ 		*{padding: 0;margin: 0;}
+ 		canvas{background: #eee;display: block;margin: 0 auto;z-index: 3;position: relative;}
+ 		span{position: absolute;width: 50%;height: 100vh;}
+
+ 	</style>
+ </head>
+ <body>
+ 	<canvas id="myCanvas" width="400" height="320"></canvas>
+
+ 	<script type="text/javascript">
+		alert("- Use mouse-CLICK or spacebar to ascent");
+
+ 		var canvas = document.querySelector("#myCanvas");
+ 		var ctx = canvas.getContext("2d");
+
+ 		setCanvasDimens();
+ 		const k = canvas.width;
+
+ 		var birdSize = k*0.03;
+ 		var x = k*0.3;
+ 		var y = canvas.height/2;
+ 		var dy = k*0.008;
+
+ 		var pipeWidth = k*0.07;
+ 		var distanceBetweenPipes = k*0.4;
+ 		var GapInPipe = k*0.18;
+ 		var pipes = [];
+ 		pipes.push({ height: randomHeight(), position: 0});
+
+ 		var keyPressed = false;
+ 		var score = 0;
+ 		var turnout = true;
+
+ 		
+ 		draw();
+
+ 		document.addEventListener("keydown",keyDownHandler);
+ 		document.addEventListener("keyup",keyUpHandler);
+ 		document.addEventListener("pointerdown", PointerDownHandler);
+ 		document.addEventListener("pointerup", PointerUpHandler);
+
+ 		function draw(){
+ 			ctx.clearRect(0,0,k,canvas.height);
+ 			drawBird();
+ 			drawpipes();
+ 			drawScore();
+ 			collisionDetection();
+			//change pipe location
+			for(var i = 0;i<pipes.length;i++){
+				pipes[i].position+=k*0.005;
+			}
+			
+			//generate new pipe
+			if(pipes[pipes.length-1].position >= distanceBetweenPipes){
+				pipes.push({ height: randomHeight(), position: 0});
+			}
+
+			//remove junk pipe
+			if(pipes[0].position >= k+pipeWidth){
+				pipes.shift();
+			}
+
+			//wall collision detection
+			if(y > canvas.height-birdSize || y < birdSize){
+				turnout = false;
+				alert("Game Over");
+				document.location.reload();
+			}
+
+			//ball movement
+			if(keyPressed) y-=dy;
+			else y+=dy;
+
+			if(turnout) requestAnimationFrame(draw);
+		}
+
+		function drawBird(){
+			ctx.beginPath();
+			ctx.arc(x,y,birdSize,0,6.282);
+			ctx.fill();
+			ctx.closePath();
+		}
+
+		function drawpipes(){
+			ctx.beginPath();
+			for(var i = 0;i<pipes.length;i++){
+				ctx.rect(k-pipes[i].position,0,pipeWidth,pipes[i].height);
+				ctx.rect(k-pipes[i].position,pipes[i].height+GapInPipe,pipeWidth,canvas.height);
+			}
+			ctx.fill();
+			ctx.closePath();
+		}
+
+		function drawScore(){
+			ctx.font = "16px Arial";
+			ctx.fillText("Score: "+score+"  (pta nhi kaun se logic se Score update ho rha hai😂😂)",8,20);
+		}
+
+		//some error in this function. Will fix tomorrow
+		function collisionDetection(){
+			for(var i = 0;i<pipes.length;i++){
+				var p = k-pipes[i].position;
+				var h = k-pipes[i].height;
+				if(x>=p && x<=p+pipeWidth && y>h && y < h+GapInPipe)
+				{
+					score++;
+				//	turnout = false;
+				//	alert("Game Over");
+				//	document.location.reload();
+			}
+		}
+	}
+	function setCanvasDimens(){
+		if(window.innerWidth<window.innerHeight){
+			canvas.width = window.innerWidth;
+			canvas.height = canvas.width*0.8;
+		}
+		else{
+			canvas.height = window.innerHeight;
+			canvas.width = canvas.height*1.25;
+		}
+	}
+
+	function randomHeight(){
+		return Math.floor(Math.random()*(canvas.height-70));
+	}
+
+
+	function keyDownHandler(e){
+		if(e.key==" "){
+			keyPressed = true;
+		}
+	}
+
+	function keyUpHandler(e){
+		if(e.key==" "){
+			keyPressed = false;
+		}
+	}
+
+	function PointerDownHandler(e) {
+		keyPressed = true;
+	}
+
+	function PointerUpHandler(e) {
+		keyPressed = false;
+	}
+
+</script>
+</body>
+</html>

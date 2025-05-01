@@ -1,0 +1,295 @@
+<!doctype html><html><head> 
+  <title>colorDraw</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+ <style type="text/css" id="dcoder_stylesheet">input[type=color]{width:50px; height:6vw;}
+body{
+  line-height:0;
+  font-family:Courier New;
+  }
+*:focus{outline:none;}
+.toast{
+  font-size:13px;
+  color:#000;
+  width:100%;
+  height:100px;
+}
+.accessories{line-height:30px;}
+.accessories button{width:80px;}
+.s{
+  background:#fffdd0;
+  color:#000;
+  font-size:15px;
+  height:25px;
+  width:100px;
+  margin-bottom:10px;
+  border:3px double #222;
+}
+.s:focus{
+  background:#f5d581;
+}
+h1{
+  text-shadow:2px 2px #fff;
+  font-size:35px;
+}
+.group1 b{
+  font-size:20px;
+}
+.group1{
+    display:flex-column;
+    position:fixed;
+    overflow:hidden;
+    overflow-Y:scroll;
+    right:0;
+    top:0;
+    bottom:0;
+    background:#236e96;
+    width:30%;
+    height:0;
+    padding-left:10px;
+    padding-right:5px;
+    border-left:2px solid #000;
+}
+b{
+  line-height:10px;
+}
+input{
+    width:90%;
+    margin-bottom:10px;
+    border-radius:3px;
+}
+
+button{
+    background:green;
+    border-radius:3px;
+    border-color:#222;
+    outline:none;
+    color:#fff;
+    font-family:Courier New;
+}
+
+button:active{
+  background:darkgreen;
+}
+
+.box{
+    height:50px;
+    width:50px;
+    display:inline-block;
+}
+
+
+.cir{
+    height:50px;
+    width:50px;
+    border-radius:25px;
+    display:inline-block;
+}
+
+.tri{
+    height:0;
+    width:0;
+    display:inline-block;
+    border-bottom:50px solid;
+    border-right:25px solid transparent;
+    border-left:25px solid transparent;
+}
+
+.intri{
+    height:0;
+    width:0;
+    display:inline-block;
+    border-top:50px solid;
+    border-right:25px solid transparent;
+    border-left:25px solid transparent;
+}</style></head> 
+ <body> 
+  <div class="toast"> 
+   <marquee direction="right"> 
+    <b>OPEN CONSOLE TO EDIT</b> 
+   </marquee> 
+  </div> 
+  <div class="group1"> 
+   <h1>TOOLS</h1> 
+   <section class="bx"> 
+    <b>SQUARE</b> 
+    <p></p> 
+    <input type="color" class="boxcol"> 
+    <br> 
+    <button onclick="boxes()" id="bo">Create</button> 
+   </section> 
+   <hr> 
+   <section class="ci"> 
+    <b>CIRCLE</b> 
+    <h5></h5> 
+    <input type="color" class="circol"> 
+    <br> 
+    <button onclick="circles()">Create</button> 
+   </section> 
+   <hr> 
+   <section class="tr"> 
+    <b>TRIANGLE</b> 
+    <h5></h5> 
+    <input type="color" class="tricol"> 
+    <br> 
+    <button onclick="triangles()">Create</button> 
+   </section> 
+   <hr> 
+   <section class="itr"> 
+    <b>INVERTED<br><br>TRIANGLE</b> 
+    <h5></h5> 
+    <input type="color" class="intricol"> 
+    <br> 
+    <button onclick="invertedtriangles()">Create</button> 
+   </section> 
+   <hr> 
+   <section> 
+    <div class="sizes"> 
+     <b>SELECT<br><br>SIZE</b> 
+     <h1></h1> 
+     <button class="s s1"> Default </button> 
+     <button class="s s2"> 75×75 </button> 
+     <button class="s s3"> 100×100 </button> 
+     <button class="s s4"> 150×150 </button> 
+    </div> 
+   </section> 
+   <hr> 
+   <p class="accessories"> <button onclick="backspace()" style="font-size:77%;height:3em">Backspace</button> <button onclick="addspace()"> Spacebar&nbsp; </button> <button onclick="newline()">Change Line</button> </p> 
+  </div> 
+  <button onclick="togconsole()" style="position: fixed;bottom: 10%;left:5%;width:75px;">Toggle<br> Console</button> 
+  <button onclick="togtheme()" style="position: fixed;bottom: 3%;left:5%;width:75px;">Toggle<br>Theme</button> 
+  <br> 
+ 
+<script type="text/javascript" id="dcoder_script">setTimeout(function(){
+    document.querySelector(".toast").style.display="none";
+  },14000);
+var a = -1;
+        var box,cir,tri,intri,i;
+   function drawbox(c){
+       box = document.createElement("div");
+       box.className = "box";
+       box.id = ++a;
+        document.body.appendChild(box);
+         box.style.backgroundColor=c;
+    }
+    function drawcircle(co){
+       cir = document.createElement("div");
+       cir.className = "cir";
+       cir.id = ++a;
+        document.body.appendChild(cir);
+         cir.style.backgroundColor=co;
+    }
+    function drawtriangle(col){
+       tri = document.createElement("div");
+       tri.className = "tri";
+       tri.id = ++a;
+        document.body.appendChild(tri);
+         tri.style.borderBottomColor=col;
+    }
+    function drawinvertedtriangle(c2){
+       intri = document.createElement("div");
+       intri.className = "intri";
+       intri.id = ++a;
+        document.body.appendChild(intri);
+         intri.style.borderTopColor=c2;
+    }
+    function newline(){
+        var linebreak = document.createElement("br");
+        document.body.appendChild(linebreak);
+    }
+    function boxes (){
+    var col = document.querySelector(".boxcol").value;
+    if(col!="") drawbox(col);
+    }
+    function circles(){
+    var col = document.querySelector(".circol").value;
+    if(col!="") drawcircle(col);
+}
+function triangles(){
+    var col = document.querySelector(".tricol").value;
+    if(col!="") drawtriangle(col);
+}
+function invertedtriangles(){
+    var col = document.querySelector(".intricol").value;
+    if(col!="") drawinvertedtriangle(col);
+}
+
+function addspace(){
+    cir = document.createElement("div");
+    cir.style.width= "50px";
+    cir.id = ++a;
+    cir.style.display="inline-block";
+    document.body.appendChild(cir);
+}
+
+function backspace(){
+  if(a!=-1){
+    
+  var p = document.querySelector("body");
+  var ch = document.getElementById(a--);
+  p.removeChild(ch);
+}
+}
+var disp = false;
+function togconsole(){
+  group = document.querySelector(".group1");
+if(disp == true) {
+  group.style.height="0";
+  group.style.transition="height .7s";
+  disp=false;
+  }
+  else{
+  group.style.height="100%";
+  group.style.transition="height .7s";
+  disp=true;
+  }
+}
+  
+var light = true;
+function togtheme(){
+  if(light)
+  {
+  $("body").css("background-color","#272727");
+  $(".group1").css("background-color","#000B82");
+  $(".group1").css("color","#fff");
+  $("h1").css("text-shadow","2px 2px #888");
+  $(".s").css({"background":"#353c51","color":"#fff","border-color":"#fff"});
+      light = false;
+  }
+  else{
+  $("body").css("background-color","#fff");
+  $(".group1").css("background-color","#236e96");
+  $(".group1").css("color","#000");
+  $("h1").css("text-shadow","2px 2px #fff");
+  $(".s").css({"background":"#fffdd0","color":"#000","border-color":"#222"});
+      light = true;
+  }
+}
+$(function(){
+$(".s1").click(function(){
+$(".box").css({"height":"50px","width":"50px"});
+$(".cir").css({"height":"50px","width":"50px","border-radius":"25px"});
+$(".tri").css({"height":"0","width":"0","border-bottom":"50px solid","border-left":"25px solid transparent","border-right":"25px solid transparent"});
+$(".intri").css({"height":"0","width":"0","border-top":"50px solid","border-left":"25px solid transparent","border-right":"25px solid transparent"});
+});});
+$(function(){
+$(".s2").click(function(){
+$(".box").css({"height":"75px","width":"75px"});
+$(".cir").css({"height":"75px","width":"75px","border-radius":"50%"});
+$(".tri").css({"height":"0","width":"0","border-bottom":"75px solid","border-left":"50% solid transparent","border-right":"25px solid transparent"});
+$(".intri").css({"height":"0","width":"0","border-top":"75px solid","border-left":"50% solid transparent","border-right":"25px solid transparent"});
+});});
+$(function(){
+$(".s3").click(function(){
+$(".box").css({"height":"100px","width":"100px"});
+$(".cir").css({"height":"100px","width":"100px","border-radius":"50px"});
+$(".tri").css({"height":"0","width":"0","border-bottom":"100px solid","border-left":"50px solid transparent","border-right":"50px solid transparent"});
+$(".intri").css({"height":"0","width":"0","border-top":"100px solid","border-left":"50px solid transparent","border-right":"50px solid transparent"});
+});});
+$(function(){
+$(".s4").click(function(){
+$(".box").css({"height":"150px","width":"150px"});
+$(".cir").css({"height":"150px","width":"150px","border-radius":"75px"});
+$(".tri").css({"height":"0","width":"0","border-bottom":"150px solid","border-left":"75px solid transparent","border-right":"75px solid transparent"});
+$(".intri").css({"height":"0","width":"0","border-top":"150px solid","border-left":"75px solid transparent","border-right":"75px solid transparent"});
+});});</script></body></html>

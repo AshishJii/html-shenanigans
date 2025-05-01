@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>Variable Speed test-miniproject</title>
+	<style type="text/css">
+		body{overscroll-behavior-y: contain;}
+	</style>
+</head>
+<body>
+	<canvas width="50vw" height="300" style="border: 2px solid black;"></canvas>
+	<script type="text/javascript">
+		var canvas = document.querySelector("canvas");
+		var ctx = canvas.getContext("2d");
+
+		canvas.width = 0.95 * window.innerWidth;
+		canvas.height = 0.95 * window.innerHeight;
+
+		let GAME_WIDTH = canvas.width;
+		let GAME_HEIGHT = canvas.height;
+		
+		//position
+		var pos1 = {x: GAME_WIDTH-30, y: GAME_HEIGHT/2};
+		var pos2 = {x: 30, y: 20};
+		dy = 0;
+		dx = 0;
+
+		
+		
+		ctx.fillRect(0,0, canvas.width,canvas.height);
+		ctx.strokeStyle = randomColor();
+		alert("- MINI PROJECT for testing object movement in variable speeds and random colors.\n- Touch n drag your finger over the screen to see it. The figure will follow you in \"decreasing speeds\".\n- DOUBLE CLICK anywhere to DOWNLOAD your art.");
+		requestAnimationFrame(draw);
+		function draw(){
+			//update
+			if(pos1.x != pos2.x)
+				dx = (pos2.x - pos1.x)/20;
+			if(pos1.y != pos2.y)
+				dy = (pos2.y - pos1.y)/20;
+			pos1.x += dx;
+			pos1.y += dy;
+
+			//draw
+			ctx.beginPath();
+			ctx.arc(pos1.x,pos1.y,20,20,0,6.3);		
+			ctx.stroke();
+			ctx.closePath();
+
+			requestAnimationFrame(draw);
+		}
+
+		//INPUT HANDLER
+		document.addEventListener("mousemove", e => {
+			var mouseX = e.clientX - canvas.offsetLeft;
+			var mouseY = e.clientY - canvas.offsetTop;
+			console.log(mouseX+" "+mouseY);
+			if(mouseX > 0 && mouseX < GAME_WIDTH 
+				&& mouseY > 0 && mouseY < GAME_HEIGHT)
+			{
+				pos2.x = mouseX;
+				pos2.y = mouseY;
+				ctx.strokeStyle = randomColor();
+			}
+		});
+		document.addEventListener("touchmove", e => {
+			var mouseX = e.touches[0].clientX - canvas.offsetLeft;
+			var mouseY = e.touches[0].clientY - canvas.offsetTop;
+			console.log(e);
+			if(mouseX > 0 && mouseX < GAME_WIDTH 
+				&& mouseY > 0 && mouseY < GAME_HEIGHT)
+			{
+				pos2.x = mouseX;
+				pos2.y = mouseY;
+				ctx.strokeStyle = randomColor();
+			}
+		});
+		document.addEventListener("dblclick", e => {
+			data = canvas.toDataURL('image/jpeg',1);
+			var link = document.createElement("a");
+			link.setAttribute('download', 'abstract_art.png');
+			link.setAttribute('href', data);
+			link.click();
+		});
+
+		//HELPER FUNCTIONS
+		function randomColor(){
+			return "rgb("+rand()+","+rand()+","+rand()+")";
+		}
+		function rand(){
+    	return Math.floor(Math.random()*250);  //dark n light colors (<=250)
+    }
+</script>
+</body>
+</html>

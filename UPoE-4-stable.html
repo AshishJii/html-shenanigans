@@ -1,0 +1,178 @@
+<!doctype html><html><head> 
+  <title>UToE</title> 
+  <script src="https://kit.fontawesome.com/2d35235f7e.js" crossorigin="anonymous"></script> 
+  <meta name="viewport" content="user-scalable=no"> 
+  <style type="text/css">
+
+  #phone{
+    border: 60px solid #222222;
+    height: 140vw;
+    width: 85%;
+    border-radius: 5%;
+    background: #777777;
+    user-select: none;
+  }
+  .screenon{
+    background-image: 
+    linear-gradient(to bottom right,#09edb4,#0e38a1);
+    display: default;
+  }
+  .screenoff{
+    display: none;
+  }
+  #onoffbut{
+    position: relative;
+    background:#222222;
+    width: 6vw;
+    height: 10vw;
+    top: -120vw;
+    left: 89vw;
+    border-radius: 20%;
+  }
+  #icons tr td{
+    max-width: 25vw;
+    width: 25vw;
+    height: 25vw;
+    border: 2px solid red;
+    padding: 1vw;
+    color: black;
+    overflow: hidden;
+    text-overflow: hidden;
+  }
+    
+#calculater {
+    height:100%;
+}
+#calnumtable{
+    color:white;
+    background-color:#0d4194;
+    bottom: 0;
+    height: 50%;
+    font-size:100%;
+    width: 100%;
+}
+#calnumtable td{
+    width: 25%;
+    height: 10%;
+    text-align: center;
+}
+.caldisp{
+    background:#333;
+    color:white;
+    font-size:100%;
+    text-align:right;
+    height:50%;
+    word-wrap: break-word;
+    word-spacing: -20px;
+    overflow-y: scroll;
+}
+.calgrn{color:#00ff00;}
+#calnumtable td:active{
+    background:rgba(0,0,0,0.2);
+    border-radius:50%;
+}
+.calequal{
+   color:black;
+   background-image:radial-gradient(#43f35f,#3498a3);
+   border-radius:30%;
+}
+
+
+#stpwtch{
+  text-align:center;
+  background: #dddddd;
+  height:100%;
+  width: 100%;
+  font-weight:bolder;
+  
+}
+#stpwtchbox{
+  position: relative;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  border:10px outset red;
+  width:55%;
+  height:35%;
+}
+.stpwtchbut{
+  color:#aaaaaa;
+  height:30%;
+}
+#stpwtchstrtbut{
+  background:green;
+}
+#stpwtchstrtbut:active{
+  color:white;
+  background:darkgreen;
+}
+#stpwtchstopbut{
+  background:blue;
+}
+#stpwtchstopbut:active{
+  color:white;
+  background:darkblue;
+  }
+#stpwtchdisp,#stpwtchtital{
+  height:20%;
+}
+</style> 
+ </head> 
+ <body> 
+  <div>
+   <div id="phone"> 
+    <div class="screenoff" id="screen" style="height: 100%;"> 
+     <div id="notibar" style="height: 5%;background: black;opacity: .5;"> 
+      <span id="time" style="color: #00ff00;font-size: 350%;font-weight: bolder;"></span> 
+     </div> 
+     <div id="scr4app" style="height: 95%;font-size: 400%;">
+     </div> 
+    </div> 
+   </div> 
+   <div id="onoffbut" onclick="switchonoff()"></div> 
+  </div> 
+  <script type="text/javascript">
+
+    alert('- Open in mobile, or click Ctrl + Shift + M to open responsive mode. Zoom in/out(ctrl-,ctrl+) till it fits perfectly\n- Press power button at side to start')
+
+    //on-off button script
+    function switchonoff(){
+      document.querySelector("#screen").classList.toggle("screenon");
+      document.querySelector("#screen").classList.toggle("screenoff");
+      document.querySelector("#scr4app").innerHTML = "<table style=\"text-align: center;\" id=\"icons\"><tr><td onclick=\"opencal()\">Calculater</td><td onclick=\"openstpwtch()\">StopWatch</td><td onclick=\"openinfo()\">Info</td></tr><tr><td>empty</td><td>empty</td><td>empty</td></tr><tr><td>empty</td><td>empty</td><td>empty</td></tr></table>";
+    }
+    //Sets time
+    window.onload = function(){
+      var time = document.querySelector("#time");
+      setInterval(function(){
+        var today = new Date();
+        time.textContent = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
+      },1000);
+    }
+
+
+    //calculater script
+    var calstr;
+    function opencal(){document.querySelector("#scr4app").innerHTML = "<div id=\"calculater\"> <div class=\"caldisp\"></div> <table id=\"calnumtable\"> <tbody> <tr> <td class=\"calgrn\" onclick=\"calclearall()\">AC</td> <td class=\"calgrn\" onclick=\"calclears()\">&larr;</td> <td class=\"calgrn\" onclick=\"calchange()\">+/-</td> <td class=\"calgrn\" onclick=\"calmake(' /')\">&divide;</td> </tr> <tr> <td onclick=\"calmake('7')\">7</td> <td onclick=\"calmake('8')\">8</td> <td onclick=\"calmake('9')\">9</td> <td class=\"calgrn\" onclick=\"calmake(' *')\">&times;</td> </tr> <tr> <td onclick=\"calmake('4')\">4</td> <td onclick=\"calmake('5')\">5</td> <td onclick=\"calmake('6')\">6</td> <td class=\"calgrn minu\" onclick=\"calmake(' -')\">-</td> </tr> <tr> <td onclick=\"calmake('1')\">1</td> <td onclick=\"calmake('2')\">2</td> <td onclick=\"calmake('3')\">3</td> <td class=\"calgrn pl\" onclick=\"calmake(' +')\">+</td> </tr> <tr> <td></td> <td onclick=\"calmake('0')\">0</td> <td onclick=\"calmake('.')\">.</td> <td class=\"calequal\" onclick=\"eva()\">=</td> </tr> </tbody> </table> <div style=\"z-index: 2;font-family: cursive;color: #ff3;font-size: 50%;padding:1%;position: relative;bottom: 4%;\">@MyselfRebel </div> </div>";calstr = "";}
+    function calmake(a){calstr+=a;document.querySelector(".caldisp").textContent = calstr;}
+    function eva(){try{document.querySelector(".caldisp").textContent = eval(calstr);}catch(e){document.querySelector(".caldisp").textContent = "Error";}calstr = "";}
+    function calclearall(){calstr = "";document.querySelector(".caldisp").textContent = "";}
+    function calclears(){calstr = calstr.substring(0,calstr.length-1);document.querySelector(".caldisp").textContent = calstr;}
+    function calchange(){calstr = "-("+calstr+")";document.querySelector(".caldisp").textContent = calstr;}
+
+
+    //Info script
+    function openinfo(){document.querySelector("#scr4app").innerHTML = "<div style=\"height:100%;background:#cccccc;\">v1.0.0 - First stable version<br>&ensp;+Calculater, +Infoscreen, +switchbutton<hr color=\"red\">v1.1.0 - <br> +stopwatch, *bugs killed BRUTALLY</div>";}
+
+
+
+    //Stopwatch script
+    var stpwtchst;var stpwtchdisp;stpwtchrun = false;
+    function openstpwtch(){document.querySelector("#scr4app").innerHTML = "<div id=\"stpwtch\"><div id=\"stpwtchbox\"><div id=\"stpwtchtital\">StopWatch</div><div id=\"stpwtchdisp\" onclick=\"stpwtchreset()\">0:0:0:0</div><div onclick=\"stpwtchstart()\" id=\"stpwtchstrtbut\" class=\"stpwtchbut\">Start</div><div onclick=\"stpwtchstop()\" id=\"stpwtchstopbut\" class=\"stpwtchbut\">Stop</div></div></div>";stpwtchdisp = document.querySelector("#stpwtchdisp");if(stpwtchrun){document.querySelector("#stpwtchstrtbut").textContent = "Start Again"};}
+
+	function stpwtchstart(){stpwtchrun = true;document.querySelector("#stpwtchstrtbut").textContent = "Start Again";clearInterval(stpwtchst);a = 10;stpwtchst = setInterval(function(){stpwtchdisp.textContent = Math.floor(a/360000)+":"+Math.floor(a/6000)%60+":"+(Math.floor(a/100))%60+":"+a%100;a+=1;console.log(a);},10)}
+	function stpwtchstop(){clearInterval(stpwtchst);}
+	function stpwtchreset(){document.querySelector("#stpwtchdisp").textContent = "0:0:0:0";}
+  </script> 
+ 
+</body></html>
